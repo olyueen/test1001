@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- 設定文件編碼 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 控制響應式布局 -->
+    <title>Reach Stacker 3D Model Viewer</title> <!-- 設定網頁標題 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> <!-- 導入Three.js庫，用於3D渲染 -->
+    <style>
+        body { margin: 0; } /* 移除頁面邊距 */
+        canvas { display: block; } /* 設置畫布顯示方式 */
+        #controls {
+            position: absolute; /* 控制面板定位方式 */
+            top: 10px; /* 控制面板上邊距 */
+            left: 10px; /* 控制面板左邊距 */
+            background: rgba(0,0,0,0.7); /* 控制面板背景顏色和透明度 */
+            color: white; /* 控制面板文字顏色 */
+            padding: 10px; /* 控制面板內邊距 */
+            border-radius: 5px; /* 控制面板圓角 */
+        }
+        .control-group {
+            margin-bottom: 10px; /* 控制組之間的間距 */
+        }
+        label {
+            display: block; /* 標籤顯示方式 */
+            margin-bottom: 5px; /* 標籤下方間距 */
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <div class="control-group">
+            <label for="boomHeight">Boom Height</label> <!-- 控制吊臂高度的標籤 -->
+            <input type="range" id="boomHeight" min="0" max="100" value="50"> <!-- 控制吊臂高度的滑動條 -->
+        </div>
+        <div class="control-group">
+            <label for="boomExtension">Boom Extension</label> <!-- 控制吊臂伸展的標籤 -->
+            <input type="range" id="boomExtension" min="0" max="100" value="50"> <!-- 控制吊臂伸展的滑動條 -->
+        </div>
+        <div class="control-group">
+            <label for="spreaderRotation">Spreader Rotation</label> <!-- 控制貨櫃吊具旋轉的標籤 -->
+            <input type="range" id="spreaderRotation" min="0" max="360" value="0"> <!-- 控制貨櫃吊具旋轉的滑動條 -->
+        </div>
+        <div class="control-group">
+            <label for="containerPresent">Container Present</label> <!-- 控制是否顯示貨櫃的標籤 -->
+            <input type="checkbox" id="containerPresent"> <!-- 控制是否顯示貨櫃的複選框 -->
+        </div>
+    </div>
+
+    <script>
+        let scene, camera, renderer, reachStacker; // 宣告場景、相機、渲染器和推高機模型變數
+
+        function init() {
+            scene = new THREE.Scene(); // 初始化3D場景
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000); // 設置透視相機參數
+            
+            renderer = new THREE.WebGLRenderer(); // 初始化WebGL渲染器
+            renderer.setSize(window.innerWidth, window.innerHeight); // 設置渲染器尺寸
+            document.body.appendChild(renderer.domElement); // 將渲染器添加到頁面中
+            
+            createReachStacker(); // 創建推高機模型
+            
+            camera.position.z = 5; // 設置相機位置
+        }
+
+        function createReachStacker() {
+            // 簡單的幾何體代表推高機不同部分
+            const base = new THREE.BoxGeometry(2, 1, 1); // 創建推高機底座幾何體
+            const baseMaterial = new THREE.MeshBasicMaterial({color: 0xff0000}); // 設置底座材質（紅色）
+            reachStacker = new THREE.Mesh(base, baseMaterial); // 創建推高機底座網格
+            
+            scene.add(reachStacker); // 將推高機添加到場景中
+        }
+
+        function animate() {
+            requestAnimationFrame(animate); // 請求動畫幀
+            renderer.render(scene, camera); // 渲染場景
+        }
+
+        init(); // 初始化場景
+        animate(); // 開始動畫循環
+
+        // 事件監聽器
+        document.getElementById('boomHeight').addEventListener('input', function(e) {
+            // 控制吊臂高度
+        });
+
+        document.getElementById('boomExtension').addEventListener('input', function(e) {
+            // 控制吊臂伸展
+        });
+
+        document.getElementById('spreaderRotation').addEventListener('input', function(e) {
+            // 控制吊具旋轉
+        });
+
+        document.getElementById('containerPresent').addEventListener('change', function(e) {
+            // 控制貨櫃顯示/隱藏
+        });
+
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight; // 更新相機長寬比
+            camera.updateProjectionMatrix(); // 更新相機投影矩陣
+            renderer.setSize(window.innerWidth, window.innerHeight); // 更新渲染器尺寸
+        });
+    </script>
+</body>
+</html>
